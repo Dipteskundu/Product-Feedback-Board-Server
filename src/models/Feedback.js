@@ -33,7 +33,7 @@ const feedbackSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['Open', 'Planned', 'In Progress', 'Done'],
+      enum: ['Open', 'Under Review', 'Planned', 'In Progress', 'Completed', 'Rejected'],
       default: 'Open',
     },
     upvoteCount: {
@@ -44,11 +44,17 @@ const feedbackSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    commentCount: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );
 
 feedbackSchema.index({ category: 1, priority: 1, createdAt: -1 });
+feedbackSchema.index({ status: 1 });
+feedbackSchema.index({ title: 'text', description: 'text' });
 
 const Feedback = mongoose.model('Feedback', feedbackSchema);
 

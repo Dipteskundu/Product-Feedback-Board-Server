@@ -6,3 +6,11 @@ export const createFeedbackSchema = z.object({
   category: z.enum(['Bug', 'Feature', 'Improvement']),
   priority: z.enum(['Low', 'Medium', 'High']),
 });
+
+export const updateStatusSchema = z.object({
+  status: z.enum(['Open', 'Under Review', 'Planned', 'In Progress', 'Completed', 'Rejected']),
+});
+
+export const updatePrioritySchema = z.object({
+  priority: z.enum(['Low', 'Medium', 'High']),
+});
