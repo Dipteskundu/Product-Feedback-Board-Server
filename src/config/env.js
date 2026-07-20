@@ -7,7 +7,7 @@ const __dirname = dirname(__filename);
 
 dotenv.config({ path: join(__dirname, '..', '..', '.env') });
 
-const required = ['MONGO_URI', 'PORT', 'COOKIE_SECRET', 'JWT_SECRET'];
+const required = ['MONGO_URI', 'COOKIE_SECRET', 'JWT_SECRET'];
 
 for (const key of required) {
   if (!process.env[key]) {
