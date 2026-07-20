@@ -6,12 +6,19 @@ import ownership from '../middleware/ownership.js';
 import requireAuth from '../middleware/requireAuth.js';
 import requireRole from '../middleware/requireRole.js';
 import Feedback from '../models/Feedback.js';
-import { updateStatusSchema, updatePrioritySchema } from '../validators/feedbackValidators.js';
+import { createFeedbackSchema, updateStatusSchema, updatePrioritySchema } from '../validators/feedbackValidators.js';
 import commentRoutes from './commentRoutes.js';
 import activityRoutes from './activityRoutes.js';
 
 const router = Router();
 
+router.post(
+  '/',
+  requireAuth,
+  feedbackLimiter,
+  validateRequest(createFeedbackSchema),
+  feedbackController.createFeedback
+);
 router.get('/', feedbackController.listFeedback);
 router.get('/related/:id', feedbackController.getRelatedFeedback);
 router.get('/:id', feedbackController.getFeedback);
