@@ -16,10 +16,10 @@ for (const key of required) {
   }
 }
 
-export default {
+export default Object.freeze({
   PORT: parseInt(process.env.PORT, 10) || 5000,
   MONGO_URI: process.env.MONGO_URI,
   COOKIE_SECRET: process.env.COOKIE_SECRET,
   CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',
   NODE_ENV: process.env.NODE_ENV || 'development',
-};
+});
