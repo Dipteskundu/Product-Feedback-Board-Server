@@ -2,6 +2,8 @@ import jwt from 'jsonwebtoken';
 import Actor from '../models/Actor.js';
 import env from '../config/env.js';
 
+const isProd = process.env.NODE_ENV === 'production';
+
 const resolveActor = async (req, res, next) => {
   try {
     // First, check for JWT token (registered user)
@@ -39,6 +41,8 @@ const resolveActor = async (req, res, next) => {
     res.cookie('actorId', actor._id.toString(), {
       httpOnly: true,
       signed: true,
+      sameSite: isProd ? 'none' : 'lax',
+      secure: isProd,
       maxAge: 365 * 24 * 60 * 60 * 1000,
     });
 

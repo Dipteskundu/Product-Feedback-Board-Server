@@ -1,9 +1,12 @@
 import * as authService from '../services/authService.js';
 
+const isProd = process.env.NODE_ENV === 'production';
+
 const COOKIE_OPTIONS = {
   httpOnly: true,
   signed: true,
-  sameSite: 'lax',
+  sameSite: isProd ? 'none' : 'lax',
+  secure: isProd,
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   path: '/',
 };
@@ -36,7 +39,8 @@ export function logout(req, res) {
   res.clearCookie('token', {
     httpOnly: true,
     signed: true,
-    sameSite: 'lax',
+    sameSite: isProd ? 'none' : 'lax',
+    secure: isProd,
     path: '/',
   });
   res.status(204).end();
