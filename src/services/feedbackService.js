@@ -1,5 +1,6 @@
 import Feedback from '../models/Feedback.js';
 import Vote from '../models/Vote.js';
+import Actor from '../models/Actor.js';
 import activityService from './activityService.js';
 import { NotFoundError, ForbiddenError } from '../middleware/errors.js';
 
@@ -109,8 +110,16 @@ const deleteFeedback = async (id, actorId) => {
   const feedback = await Feedback.findById(id);
   if (!feedback) throw new NotFoundError();
 
-  if (feedback.createdByActorId.toString() !== actorId.toString()) {
-    throw new ForbiddenError();
+  const actor = await Actor.findById(actorId);
+  const isManagerOrAdmin = actor && (actor.role === 'manager' || actor.role === 'admin');
+
+  if (!isManagerOrAdmin) {
+    if (feedback.createdByActorId.toString() !== actorId.toString()) {
+      throw new ForbiddenError('You can only delete your own feedback');
+    }
+    throw new ForbiddenError(
+      'Only managers and admins can delete feedback directly. Please submit a delete request.'
+    );
   }
 
   await Feedback.findByIdAndDelete(id);
@@ -127,6 +136,11 @@ const deleteFeedback = async (id, actorId) => {
 const updateStatus = async (id, status, actorId) => {
   const feedback = await Feedback.findById(id);
   if (!feedback) throw new NotFoundError();
+
+  const actor = await Actor.findById(actorId);
+  if (!actor || (actor.role !== 'manager' && actor.role !== 'admin')) {
+    throw new ForbiddenError('Only managers and admins can update feedback status');
+  }
 
   const from = feedback.status;
   feedback.status = status;
@@ -145,6 +159,11 @@ const updateStatus = async (id, status, actorId) => {
 const updatePriority = async (id, priority, actorId) => {
   const feedback = await Feedback.findById(id);
   if (!feedback) throw new NotFoundError();
+
+  const actor = await Actor.findById(actorId);
+  if (!actor || (actor.role !== 'manager' && actor.role !== 'admin')) {
+    throw new ForbiddenError('Only managers and admins can update feedback priority');
+  }
 
   const from = feedback.priority;
   feedback.priority = priority;

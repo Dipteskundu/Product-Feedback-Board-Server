@@ -22,6 +22,9 @@ const activitySchema = new mongoose.Schema(
         'comment_added',
         'vote_cast',
         'deleted',
+        'delete_requested',
+        'delete_approved',
+        'delete_rejected',
       ],
     },
     details: {
