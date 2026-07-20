@@ -2,22 +2,6 @@ import mongoose from 'mongoose';
 import feedbackService from '../services/feedbackService.js';
 import { ValidationError } from '../middleware/errors.js';
 
-const createFeedback = async (req, res, next) => {
-  try {
-    const { title, description, category, priority } = req.body;
-    const feedback = await feedbackService.createFeedback({
-      title,
-      description,
-      category,
-      priority,
-      actorId: req.actorId,
-    });
-    res.status(201).json(feedback);
-  } catch (error) {
-    next(error);
-  }
-};
-
 const listFeedback = async (req, res, next) => {
   try {
     const { category, priority, status, search, sort, page, limit, fromDate, toDate } = req.query;
@@ -112,7 +96,6 @@ const getRelatedFeedback = async (req, res, next) => {
 };
 
 export default {
-  createFeedback,
   listFeedback,
   getFeedback,
   deleteFeedback,

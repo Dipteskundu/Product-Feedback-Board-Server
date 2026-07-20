@@ -27,7 +27,10 @@ const createComment = async ({ feedbackId, actorId, body, parentId = null }) => 
 };
 
 const listComments = async (feedbackId) => {
-  const comments = await Comment.find({ feedbackId }).sort({ createdAt: 1 }).lean();
+  const comments = await Comment.find({ feedbackId })
+    .populate('actorId', 'name')
+    .sort({ createdAt: 1 })
+    .lean();
 
   const topLevel = comments.filter((c) => !c.parentId);
   const replies = comments.filter((c) => c.parentId);

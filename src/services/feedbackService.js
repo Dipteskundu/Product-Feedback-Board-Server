@@ -4,24 +4,6 @@ import Actor from '../models/Actor.js';
 import activityService from './activityService.js';
 import { NotFoundError, ForbiddenError } from '../middleware/errors.js';
 
-const createFeedback = async ({ title, description, category, priority, actorId }) => {
-  const feedback = await Feedback.create({
-    title,
-    description,
-    category,
-    priority,
-    createdByActorId: actorId,
-  });
-
-  await activityService.logActivity({
-    feedbackId: feedback._id,
-    actorId,
-    action: 'created',
-  });
-
-  return feedback;
-};
-
 const listFeedback = async ({
   category,
   priority,
@@ -243,7 +225,6 @@ const getRelatedFeedback = async (id, category) => {
 };
 
 export default {
-  createFeedback,
   listFeedback,
   getFeedbackById,
   deleteFeedback,

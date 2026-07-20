@@ -12,7 +12,7 @@ import routes from './routes/index.js';
 const app = express();
 
 app.use(helmet());
-app.use(cors({ origin: env.CLIENT_URL, credentials: true }));
+app.use(cors({ origin: true, credentials: true }));
 app.use(compression());
 app.use(cookieParser(env.COOKIE_SECRET));
 app.use(express.json());
